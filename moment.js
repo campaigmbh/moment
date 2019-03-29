@@ -1049,7 +1049,14 @@
         dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
 
         // Make Sure calculation of the end date of the month return to get date of the other month correctly
-        if ([29, 28, 30, 31].includes(dayOfMonth)) dayOfMonth = daysInMonth(mom.year(), value)
+        if ([29, 28, 30, 31].includes(dayOfMonth)) {
+            const lastDayOfCurrentMonth = daysInMonth(mom.year(), mom.month());
+
+            // Is in fact last day of the month
+            if (dayOfMonth === lastDayOfCurrentMonth) {
+                dayOfMonth = daysInMonth(mom.year(), value);
+            }
+        }
 
         mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
         return mom;
